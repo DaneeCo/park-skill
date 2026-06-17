@@ -1,111 +1,131 @@
 ---
-name: park
-description: Consolidate the current session into one clean, resumable handoff and "park" it, so the user can close the task and pick the work back up cold — even days later — without replaying the whole thread. Use this skill WHENEVER the user says "park", "parking lot", "park it", "park this", "let's park", or otherwise signals they are pausing, wrapping up, stopping for the day, "saving where we are", "I'll come back to this later", or ending a working session — even if they don't say the word "park". Works in ANY project workspace — it reverse-engineers where things stand from the conversation and the workspace files, writes a single dated handoff doc (state + decisions + open items + a paste-able resume prompt) into a "Parking Lot" folder, and gives a short recap. This is a token-, memory-, and context-optimization tool for ending sessions cleanly; reach for it proactively when a session is winding down.
+name: publish-skill-to-github
+description: >
+  Package one of Danee's Claude skills for publishing on GitHub: auto-drafts a
+  README from the skill's own SKILL.md, applies the locked Danee Co branding,
+  bundles a clean folder plus a one-click install zip, and hands over the exact
+  GitHub upload steps and repo description. Use whenever Danee says "upload a
+  skill to GitHub", "publish my skill", "put this skill on GitHub", "package
+  this skill for GitHub", "get this skill ready to share", or names a skill she
+  wants to ship publicly. This skill stops at publishing. It does NOT write the
+  follower-facing install instructions (that is a separate skill).
 ---
 
-# Park
+# Publish Skill to GitHub
 
-*Brought to you by Danee Co — creative operations and AI enablement consultant. [Say hi on LinkedIn](https://www.linkedin.com/in/daneechavez).*
-
-## What this does, and why it matters
-
-Long task threads get expensive and lossy. Every extra turn carries the whole history, and when the user comes back later they either reload a bloated thread or lose context entirely. **Park** solves this: it distills everything that matters from the current session into a single, self-sufficient handoff document the user can drop into a brand-new task. The new task starts cold but fully oriented — no replaying the old conversation.
-
-Think of it as a parking lot. The user says "park" when they're done for now (end of day, switching focus, or just pausing), and Park leaves them a labeled spot they can pull back into whenever — tomorrow or in three days — with a prompt and a state doc that carry the full picture.
-
-The goal is **resumability with the least possible weight**: one clean file per pause, saved where it's easy to find, written so a fresh session needs only that file (plus the docs it points to) to continue exactly where things left off.
+Turns a finished Claude skill into a publish-ready GitHub package: a branded README, a clean folder, and a one-click install zip, plus the exact steps to put it up. The order below is fixed. Run it in sequence, and stop at the approval gate before packaging anything.
 
 ## When to run
 
-Trigger on the obvious phrases — "park", "parking lot", "park it / this", "let's park" — and also on the softer signals that a session is ending: "let's stop here", "wrap this up", "I'm done for the day", "save where we're at", "I'll come back to this", "let's continue this tomorrow". When in doubt and the session is clearly winding down, offer it.
+Trigger on "upload a skill to GitHub", "publish my skill", "put this skill on GitHub", "package this skill for GitHub", "get this skill ready to share", or when Danee names a skill and says she wants it public. If she has not said which skill, ask which one before doing anything else.
 
-The user may or may not be heading straight into a new task. **Either is fine.** If they're not ready to start the next thing, Park still captures where things stand and where they were headed — a pure save point. Don't require a "next task" to exist.
+## The order of steps
 
-## How to run it
+Run these in order. Do not skip the approval gate.
 
-### Step 1 — Reverse-engineer the state (distill, don't reload)
+1. **Identify and read the source skill.** Confirm which skill she means, then read its `SKILL.md` (usually in her skills directory). Everything downstream is drafted from this file, so read it fully first.
 
-Reconstruct where things stand from two sources, in this order:
-1. **The conversation** — what got done this session, decisions made, things proven or built, corrections the user gave, and where the work was heading next.
-2. **The workspace folder** — read `CLAUDE.md` (or equivalent project instructions) for conventions; scan recent files and any existing state docs (findings docs, trackers, prior Park handoffs) to ground the summary in what's actually saved. Read `MEMORY.md` if present for context.
+2. **Auto-draft the README from the SKILL.md.** Pull what the skill actually does, when it runs, what it produces, and its principles straight from the source. Do not invent features. Use the README template below.
 
-Distill. Do not transcribe the thread. Capture the through-line: what changed, what's decided, what's open, what's next.
+3. **Apply the Danee Co branding precedent** (locked rules in the next section). Branding goes on the README and as one attribution line inside the SKILL.md copy. It never goes into whatever the skill itself generates at runtime.
 
-### Step 2 — Decide the next task automatically
+4. **Approval gate.** Show Danee the drafted README and wait for an explicit yes before packaging or zipping. Nothing gets bundled until she approves.
 
-Determine the obvious next step yourself and state it — don't stop to ask. If the work follows phases or a plan, name the next phase. If there genuinely is no clear next task, say so and make the handoff a pure state-capture. (The user chose "auto, no confirm" — respect their time; they can adjust the next-step line in the doc if they disagree.)
+5. **Package the folder.** Create a folder named after the skill (e.g. `park/`) holding `README.md` and the branded `SKILL.md`.
 
-### Step 3 — Write ONE handoff doc
+6. **Build the install zip.** Zip the folder as `<skill-name>.zip` so followers can download once and upload straight into Claude.
 
-Write a single Markdown file into a **`Parking Lot/`** folder in the workspace (create it if missing). This keeps every resume point in one tidy place without cluttering working folders.
+7. **Hand over the GitHub steps.** Give her the upload walkthrough, the repo short-description one-liner, and the note to put her LinkedIn in the Website field. Mention Releases only as an optional tidier path, and default to a plain commit.
 
-- **Naming:** follow the workspace's file-naming convention if `CLAUDE.md` specifies one; otherwise use `MMDDYYYY_<ShortProjectName>_Park.md` (get today's date from the system; derive a short project name from the workspace folder). If a same-day Park file already exists, append a short time or counter so nothing is overwritten.
-- **Never overwrite or delete** a prior Park doc. Each pause is its own labeled spot.
-- Use the exact template in "Handoff doc template" below. Keep it lean — distilled, not exhaustive.
+## Danee Co branding precedent (locked)
 
-### Step 4 — Handle open items adaptively (the "tracker" question)
+Apply every time, no exceptions:
 
-If the project already maintains a living tracker or open-questions doc, append any *new* open items or assumptions to it so the project's running record stays current. If there is no such doc, just fold the open items into the handoff doc — **don't create a tracker the project never had.** The point is to keep information codified without adding weight or mess.
+- **README header**, near the top, bold: `Brought to you by [Danee Co](https://www.linkedin.com/in/daneechavez), creative operations and AI enablement consultant.`
+- **README footer**, last line: a short, warm CTA back to LinkedIn, in her voice. Example shape: `Built by Danee Co. If this saved you time, tell me what landed: https://www.linkedin.com/in/daneechavez`
+- **SKILL.md attribution**, one italic line directly under the `#` title: `*Brought to you by Danee Co, creative operations and AI enablement consultant. Say hi on LinkedIn: https://www.linkedin.com/in/daneechavez*`
+- **Never in generated output.** If the skill writes working files at runtime (handoff docs, reports, drafts), branding stays out of those. Those belong to the user.
+- **License:** MIT, unless Danee says otherwise.
+- **LinkedIn URL:** https://www.linkedin.com/in/daneechavez
 
-### Step 5 — Give a short chat recap and surface the prompt
+### Voice rules (non-negotiable on anything public)
 
-In the conversation, give a brief spoken-style recap (a few sentences: what we did, where we parked, what's next) and paste the resume prompt as a copyable block so the user can immediately drop it into a new task. Then present the handoff file. Keep the chat closing tight — the doc holds the detail.
+The README and the repo description go out under Danee's name, so they follow her voice rules. Reference the `danee-voice-skill` for the full set. The hard ones:
+
+- **No em dashes.** Restructure with commas, colons, or periods. If a dash is unavoidable, use a double dash `--`, and at most once.
+- **No "genuinely", no "moved the needle"**, and no other obvious AI tells.
+- Plain and direct. No filler, no hype.
+
+Run the finished README and description through this check before handing them over.
+
+## File format
+
+- `README.md`: GitHub-flavored Markdown. Renders on the repo landing page.
+- `SKILL.md`: YAML frontmatter (`name`, `description`) followed by the Markdown body. The branded copy adds the one attribution line under the title; the rest of the body is unchanged.
+- Folder: `<skill-name>/` containing both files. This is what gets committed to the repo.
+- `<skill-name>.zip`: the folder, zipped, for one-click follower download and install.
+
+## README template
+
+Draft from the source SKILL.md. Keep it lean. No em dashes.
+
+```markdown
+# [Skill Name]
+
+**Brought to you by [Danee Co](https://www.linkedin.com/in/daneechavez), creative operations and AI enablement consultant.**
+
+[One or two sentences: what the skill is and the problem it solves, pulled from the SKILL.md.]
+
+## What it does
+
+[2 to 4 short paragraphs distilled from the SKILL.md body.]
+
+## When it runs
+
+[The trigger phrases and situations, from the SKILL.md description.]
+
+## What you get
+
+[Bulleted outcomes. Use a colon after each label, not a dash:]
+- **Label:** what it produces.
 
 ## Principles
 
-- **One file per park.** Tidy beats thorough. A pile of fragments defeats the purpose.
-- **Self-sufficient.** A fresh task should need only this doc and the files it references — not the old thread. Always include an ordered "read these first" list pointing to the real source docs.
-- **Distill, don't dump.** Capture the through-line and decisions, not a transcript.
-- **Don't touch memory.** Do not write to `MEMORY.md` or persistent memory unless the user explicitly asks. Memory is user-triggered.
-- **Respect the workspace's conventions.** Honor `CLAUDE.md` naming/structure rules and any approval gates. If the project requires approval before modifying existing files, that applies to appending to an existing tracker — show the change first.
-- **Match the user's voice.** Keep prompts and docs in plain, direct language; no filler.
+[The skill's core rules, distilled.]
 
-## Handoff doc template
+## Install
 
-ALWAYS produce this structure:
+Drop the `[skill-name]/` folder (containing `SKILL.md`) into your Claude skills directory. In Claude Cowork or Claude.ai with skills enabled, it loads automatically and fires on the trigger phrases above.
 
-```markdown
-# [Project] — Park / Handoff ([Month D, YYYY])
-*Resume point. Open this in a fresh task to continue cold. Prompt to paste is at the top; state is below.*
+## License
 
-## ▶ PASTE THIS TO START THE NEXT TASK
-> [Resume prompt — see "Resume prompt template" below.]
+MIT
 
-## Where we are
-[2–5 sentences: what this project is and the current state, in plain terms.]
+---
 
-## What got done this session
-- [Distilled bullets of what changed / was proven / was built.]
-
-## Decisions locked
-- [Each decision + one-line why, so they aren't relitigated.]
-
-## Open items / where we were headed
-- [Unresolved questions, assumptions in flight, and the intended next direction.]
-
-## Next task
-[The obvious next step, stated. Or "No fixed next task — this is a pure save point."]
-
-## Read these first (in order)
-1. [path] — [why]
-2. ...
-[Point to the real source docs + any build artifacts. This is what makes the doc self-sufficient.]
+Built by Danee Co. If this saved you time, tell me what landed: https://www.linkedin.com/in/daneechavez
 ```
 
-## Resume prompt template
+## GitHub repo short-description template
 
-Write the paste-able prompt in second person to the assistant, carrying just enough to start cold. Mirror how the user works (if their `CLAUDE.md` or prior handoffs show a preferred style — e.g., "confirm you've read the docs, reflect back the plan, don't build until I confirm" — match it). Default shape:
+The one-liner beside the repo name. Front-load the value; only the first ~120 characters show before truncation.
 
-```
-You are my [role] for [project]. I'm [name], [one-line context].
-Read these docs in my project folder first, in order: [ordered list from the handoff].
-Here's where we are: [one-paragraph state]. Decisions locked: [the key ones].
-We're picking up at: [next task, or "I'm just resuming — get oriented first"].
-Carry these rules: [the project's standing rules].
-Start by confirming you've read the docs and reflecting back the plan; then tell me what you need to begin. Don't build until I confirm.
-```
+`[Skill Name]: a Claude skill that [core value in one clause]. By Danee Co.`
 
-## Example
+## GitHub upload steps (hand these to Danee)
 
-**Input:** "Okay, let's park it for today."
-**Output:** Read the conversation + workspace; write `Parking Lot/06082026_RawCreative_Park.md` containing the state, locked decisions, open items, the auto-chosen next task, an ordered read-first list, and a paste-able resume prompt; append any new open questions to the project's existing tracker if it has one; then give a 3-sentence recap in chat with the resume prompt as a copyable block, and present the file.
+1. On github.com, click **+** then **New repository**. Name it after the skill (e.g. `park-skill`). Paste the short description. Choose Public or Private. Check **Add a README file**, then **Create repository**.
+2. Put her LinkedIn in the **Website** field (gear icon by the About section, or the repo settings).
+3. Click **Add file** then **Upload files**. Drag in `README.md`, `SKILL.md`, and `<skill-name>.zip`. Scroll down and **Commit changes**.
+4. Edit the auto-created `README.md`, paste the branded version, **Commit**.
+5. Followers download the skill by clicking `<skill-name>.zip` then **Download**. That is the link to point to from LinkedIn.
+
+Optional: instead of committing the zip into the file tree, attach it under **Releases** for a tidy, stable download link. Skip unless she asks.
+
+## Principles
+
+- **Draft from the source, never invent.** The README reflects what the SKILL.md actually does.
+- **Approval before packaging.** Show the README, wait for yes, then zip.
+- **Branding on the wrapper, not the output.** README and SKILL.md attribution, never the runtime files.
+- **Voice rules are not optional.** Public copy gets the no-em-dash, no-AI-tells pass every time.
+- **One folder, one zip, clean steps.** Tidy beats clever.
